@@ -17,7 +17,7 @@ const main = {
   player: new Player(1024 / 2, 768 / 2),
   background: new Background("./assets/image2.jpg", 0, 0, 10240, 7680),
   attacks: [
-    new Laser(100, 768, 100, 0, 10)
+    new Laser(100, 600, 300, 100, 10)
   ],
   draw: (ctx) => {
     // ctx.clearRect(0, 0, main.width, main.height);

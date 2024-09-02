@@ -40,7 +40,6 @@ class Player {
         ctx.fillStyle = "green";
       ctx.fillRect(this.pos.x - this.size / 2, this.pos.y - this.size / 2, this.size, this.size)
     // }else{
-      console.log({ x: this.pos.x, y: this.pos.y });
       // ctx.translate(-this.pos.x, -this.pos.y);
       // ctx.fillRect(this.pos.x - this.size / 2, this.pos.y - this.size / 2, this.size, this.size)
       // ctx.translate(this.pos.x, this.pos.y);
