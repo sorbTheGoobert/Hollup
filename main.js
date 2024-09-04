@@ -35,7 +35,7 @@ const main = {
   // Game objects
   player: new Player(1024 / 2, 768 / 2),
   background: new Background("./assets/image2.jpg", 0, 0, 10240, 7680),
-  attacks: [new Laser(100, 768, 100, 0, 10)],
+  attacks: [new Laser(100, 0, 100, 768)],
 
   /**
    * * Draws the background, and refreshes it

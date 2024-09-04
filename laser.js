@@ -5,7 +5,6 @@
  * TODO: Add amount of time waited for it to spawn and dispawn
  */
 export default class Laser {
-
   /**
    * * This is the constructor for Laser
    * @param {number} x
@@ -29,7 +28,7 @@ export default class Laser {
 
   /**
    * * Just draws the laser
-   * @param {object} ctx 
+   * @param {object} ctx
    * * As always, context for drawing
    */
   draw = (ctx) => {
@@ -49,7 +48,8 @@ export default class Laser {
       target.pos.y + target.size >= this.pos.y &&
       target.pos.y <= this.pos.y + this.height
     ) {
-      target.color = "yellow"
+      target.color = "yellow";
+      console.log("HIT");
     }
   };
 }
