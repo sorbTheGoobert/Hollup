@@ -3,7 +3,7 @@
  */
 class Player {
   /**
-   * So this is the initialization of the Player
+   * * So this is the initialization of the Player
    * @param {number} x
    * X coordinate
    * @param {number} y
@@ -41,7 +41,7 @@ class Player {
     };
   }
   /**
-   * Draws the player
+   * * Draws the player
    * @param {Object} ctx
    */
   draw = (ctx) => {
@@ -55,7 +55,16 @@ class Player {
       this.size
     );
   };
+
+  /**
+   * * So this is the method that handles player moevement
+   * @param {number} width 
+   * Game widht
+   * @param {number} height 
+   * Game height
+   */
   move = (width, height) => {
+    
     // vertical movement
     if (this.keys.space && this.keys.s) {
       this.speed.vertical.current = 0;
