@@ -1,9 +1,20 @@
+/**
+ * * This is the player file, Its only for the Player class
+ */
 class Player {
+  /**
+   * So this is the initialization of the Player
+   * @param {number} x
+   * X coordinate
+   * @param {number} y
+   * Y coordinate
+   */
   constructor(x, y) {
     this.pos = {
       x: x,
       y: y,
     };
+
     this.color = "red";
     this.size = 25;
     this.keys = {
@@ -12,6 +23,7 @@ class Player {
       s: false,
       d: false,
     };
+
     this.speed = {
       horizontal: {
         current: 0,
@@ -22,29 +34,26 @@ class Player {
       vertical: {
         current: 0,
         thrust: -0.6,
-        gravity: 0.4,     
+        gravity: 0.4,
         terminal: 12,
-        top_speed: -7,  
+        top_speed: -7,
       },
     };
   }
-  draw = (ctx, gw, gh, w, h) => {
+  /**
+   * Draws the player
+   * @param {Object} ctx
+   */
+  draw = (ctx) => {
+    // Deleted the depricated stuff btw
     ctx.fillStyle = this.color;
-    // if(
-      //   this.pos.x >= 400 &&d
-      //   this.pos.x <= gw - 400 &&
-      //   this.pos.y >= 400 &&
-      //   this.pos.y <= gh - 400
-      // ){
-        // ctx.fillRect((w - this.size) / 2, (h - this.size) / 2, this.size, this.size);
-        ctx.fillStyle = "green";
-      ctx.fillRect(this.pos.x - this.size / 2, this.pos.y - this.size / 2, this.size, this.size)
-    // }else{
-      console.log({ x: this.pos.x, y: this.pos.y });
-      // ctx.translate(-this.pos.x, -this.pos.y);
-      // ctx.fillRect(this.pos.x - this.size / 2, this.pos.y - this.size / 2, this.size, this.size)
-      // ctx.translate(this.pos.x, this.pos.y);
-    // }
+    ctx.fillStyle = "green";
+    ctx.fillRect(
+      this.pos.x - this.size / 2,
+      this.pos.y - this.size / 2,
+      this.size,
+      this.size
+    );
   };
   move = (width, height) => {
     // vertical movement
