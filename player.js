@@ -16,7 +16,11 @@ class Player {
       y: y,
     };
 
-    this.color = "red";
+    this.color = {
+      idle: "navy",
+      hit: "purple",
+      current: ""
+    };
     this.size = 25;
     this.keys = {
       space: false,
@@ -47,8 +51,8 @@ class Player {
    */
   draw = (ctx) => {
     // Deleted the depricated stuff btw
-    ctx.fillStyle = this.color;
-    ctx.fillStyle = "green";
+    // ! THE COLOR IS CHANGED IN THE LASER JS AND DECIDED IF HIT OR NOT
+    ctx.fillStyle = this.color.current
     ctx.fillRect(
       this.pos.x - this.size / 2,
       this.pos.y - this.size / 2,

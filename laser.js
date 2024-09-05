@@ -41,15 +41,16 @@ export default class Laser {
    * @param {object} player
    * * The player object
    */
-  check = (target) => {
+  check = (target, ctx) => {
     if (
-      target.pos.x + target.size >= this.pos.x &&
-      target.pos.x <= this.pos.x + this.width &&
-      target.pos.y + target.size >= this.pos.y &&
-      target.pos.y <= this.pos.y + this.height
+      target.pos.x + target.size / 2 >= this.pos.x &&
+      target.pos.x - target.size / 2<= this.pos.x + this.width &&
+      target.pos.y + target.size / 2 >= this.pos.y &&
+      target.pos.y - target.size / 2<= this.pos.y + this.height
     ) {
-      target.color = "yellow";
-      console.log("HIT");
+      target.color.current = target.color.hit;
+    }else{
+      target.color.current = target.color.idle;
     }
   };
 }

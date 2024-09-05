@@ -106,8 +106,17 @@ const main = {
     // Background
     main.draw(ctx);
 
-    // Player
+    // Update and checks
     main.player.move(main.genuine_width, main.genuine_height);
+    main.attacks.forEach((element) => {
+      element.check(main.player, ctx);
+    });
+
+    // Drawing
+    main.attacks.forEach((element) => {
+      element.draw(ctx);
+    });
+
     main.player.draw(
       ctx,
       main.genuine_width,
@@ -115,14 +124,6 @@ const main = {
       main.width,
       main.height
     );
-
-    // Projectiles
-    main.attacks.forEach((element) => {
-      element.check(main.player, ctx);
-    });
-    main.attacks.forEach((element) => {
-      element.draw(ctx);
-    });
   },
 };
 
