@@ -35,7 +35,7 @@ const main = {
   // Game objects
   player: new Player(1024 / 2, 768 / 2),
   background: new Background("./assets/image2.jpg", 0, 0, 10240, 7680),
-  attacks: [new Laser(100, 0, 100, 768)],
+  attacks: [],
 
   /**
    * * Draws the background, and refreshes it
@@ -95,6 +95,115 @@ const main = {
       }
     });
 
+    // Attacks
+    const firstBatch = 45;
+    for (let attack = 0; attack < firstBatch; attack++) {
+      // Horiz double
+      main.attacks.push(
+        new Laser(
+          0,
+          Math.floor(Math.random() * (main.height - 50)),
+          main.width,
+          50,
+          3 * 60 + attack * 20,
+          0.25 * 60,
+          1.5 * 60
+        )
+      );
+      main.attacks.push(
+        new Laser(
+          0,
+          Math.floor(Math.random() * (main.height - 50)),
+          main.width,
+          50,
+          3 * 60 + attack * 20,
+          0.25 * 60,
+          1.5 * 60
+        )
+      );
+
+      // Verti double
+      main.attacks.push(
+        new Laser(
+          Math.floor(Math.random() * (main.height - 50)),
+          0,
+          50,
+          main.height,
+          3 * 60 + attack * 20,
+          0.25 * 60,
+          1.5 * 60
+        )
+      );
+      main.attacks.push(
+        new Laser(
+          Math.floor(Math.random() * (main.height - 50)),
+          0,
+          50,
+          main.height,
+          3 * 60 + attack * 20,
+          0.25 * 60,
+          1.5 * 60
+        )
+      );
+    }
+
+    const secondBatch = 8;
+    for (let attack = firstBatch; attack < firstBatch + secondBatch; attack++) {
+      // * Top left
+      // Horiz
+      main.attacks.push(
+        new Laser(
+          0,
+          (attack - firstBatch) * 96,
+          game.width,
+          96,
+          3 * 60 + attack * 20 + (attack - firstBatch) * 60,
+          0.5 * 60,
+          0.5 * 60
+        )
+      );
+      // * Bottom right
+      // Horiz
+      main.attacks.push(
+        new Laser(
+          0,
+          game.height - (attack - firstBatch + 1) * 96,
+          game.width,
+          96,
+          3 * 60 + attack * 20 + (attack - firstBatch) * 60,
+          0.5 * 60,
+          0.5 * 60
+        )
+      );
+    }
+    for (let attack = firstBatch; attack < firstBatch + secondBatch; attack++) {
+      // * Top left
+      // Verti
+      main.attacks.push(
+        new Laser(
+          (attack - firstBatch) * 128,
+          0,
+          128,
+          game.height,
+          3 * 60 + attack * 20 + (attack - firstBatch) * 60,
+          0.5 * 60,
+          0.5 * 60
+        )
+      );
+      // * Bottom right
+      // Verti
+      main.attacks.push(
+        new Laser(
+          game.width - (attack - firstBatch + 1) * 128,
+          0,
+          128,
+          game.height,
+          3 * 60 + attack * 20 + (attack - firstBatch) * 60,
+          0.5 * 60,
+          0.5 * 60
+        )
+      );
+    }
     setInterval(requestAnimationFrame, 1000 / 60, main.update);
   },
 

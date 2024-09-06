@@ -32,16 +32,16 @@ class Player {
     this.speed = {
       horizontal: {
         current: 0,
-        thrust: 0.5,
-        top_speed: 9,
+        thrust: 0.6,
+        top_speed: 6,
         deaccelearation: -0.1,
       },
       vertical: {
         current: 0,
         thrust: -0.6,
         gravity: 0.4,
-        terminal: 12,
-        top_speed: -7,
+        terminal: 8,
+        top_speed: -5,
       },
     };
   }
