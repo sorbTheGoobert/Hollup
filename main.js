@@ -9,6 +9,7 @@
 import Player from "./player.js";
 import Background from "./background.js";
 import Laser from "./laser.js";
+import initAttacks from "./attacks.js";
 
 // Display
 const game = document.getElementById("game");
@@ -50,6 +51,14 @@ const main = {
     // ctx.fillRect(0, 0, main.width, main.height);
 
     main.background.draw(ctx, main.player.pos.y, main.player.pos.x);
+  },
+
+  drawGUI: (ctx) => {
+    ctx.font = "50px Arial";
+    ctx.fillStyle = "navy";
+    ctx.textBaseline = "top";
+    ctx.textAlign = "start";
+    ctx.fillText(main.player.hit, 10, 10);
   },
 
   /**
@@ -95,115 +104,15 @@ const main = {
       }
     });
 
+    window.addEventListener("keypress", (event) => {
+      if(event.code === "KeyF") {
+        main.player.doADash();
+      }
+    })
+
     // Attacks
-    const firstBatch = 45;
-    for (let attack = 0; attack < firstBatch; attack++) {
-      // Horiz double
-      main.attacks.push(
-        new Laser(
-          0,
-          Math.floor(Math.random() * (main.height - 50)),
-          main.width,
-          50,
-          3 * 60 + attack * 20,
-          0.25 * 60,
-          1.5 * 60
-        )
-      );
-      main.attacks.push(
-        new Laser(
-          0,
-          Math.floor(Math.random() * (main.height - 50)),
-          main.width,
-          50,
-          3 * 60 + attack * 20,
-          0.25 * 60,
-          1.5 * 60
-        )
-      );
+    initAttacks(main);
 
-      // Verti double
-      main.attacks.push(
-        new Laser(
-          Math.floor(Math.random() * (main.height - 50)),
-          0,
-          50,
-          main.height,
-          3 * 60 + attack * 20,
-          0.25 * 60,
-          1.5 * 60
-        )
-      );
-      main.attacks.push(
-        new Laser(
-          Math.floor(Math.random() * (main.height - 50)),
-          0,
-          50,
-          main.height,
-          3 * 60 + attack * 20,
-          0.25 * 60,
-          1.5 * 60
-        )
-      );
-    }
-
-    const secondBatch = 8;
-    for (let attack = firstBatch; attack < firstBatch + secondBatch; attack++) {
-      // * Top left
-      // Horiz
-      main.attacks.push(
-        new Laser(
-          0,
-          (attack - firstBatch) * 96,
-          game.width,
-          96,
-          3 * 60 + attack * 20 + (attack - firstBatch) * 60,
-          0.5 * 60,
-          0.5 * 60
-        )
-      );
-      // * Bottom right
-      // Horiz
-      main.attacks.push(
-        new Laser(
-          0,
-          game.height - (attack - firstBatch + 1) * 96,
-          game.width,
-          96,
-          3 * 60 + attack * 20 + (attack - firstBatch) * 60,
-          0.5 * 60,
-          0.5 * 60
-        )
-      );
-    }
-    for (let attack = firstBatch; attack < firstBatch + secondBatch; attack++) {
-      // * Top left
-      // Verti
-      main.attacks.push(
-        new Laser(
-          (attack - firstBatch) * 128,
-          0,
-          128,
-          game.height,
-          3 * 60 + attack * 20 + (attack - firstBatch) * 60,
-          0.5 * 60,
-          0.5 * 60
-        )
-      );
-      // * Bottom right
-      // Verti
-      main.attacks.push(
-        new Laser(
-          game.width - (attack - firstBatch + 1) * 128,
-          0,
-          128,
-          game.height,
-          3 * 60 + attack * 20 + (attack - firstBatch) * 60,
-          0.5 * 60,
-          0.5 * 60
-        )
-      );
-    }
     setInterval(requestAnimationFrame, 1000 / 60, main.update);
   },
 
@@ -226,13 +135,9 @@ const main = {
       element.draw(ctx);
     });
 
-    main.player.draw(
-      ctx,
-      main.genuine_width,
-      main.genuine_height,
-      main.width,
-      main.height
-    );
+    main.drawGUI(ctx);
+
+    main.player.draw(ctx);
   },
 };
 

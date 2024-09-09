@@ -1,4 +1,3 @@
-
 /**
  * * This is the player file, Its only for the Player class
  */
@@ -18,8 +17,16 @@ class Player {
 
     this.color = {
       idle: "navy",
-      hit: "purple",
-      current: ""
+      current: "",
+      dash: {
+        active: "pink",
+        ready: `rgba(255, 255, 0, 1)`,
+        opacity: 1,
+      },
+      hit: {
+        color1: "blue",
+        color2: "cyan",
+      },
     };
     this.size = 25;
     this.keys = {
@@ -44,6 +51,14 @@ class Player {
         top_speed: -5,
       },
     };
+
+    this.hit = 0;
+    this.iframes = 0;
+    this.dash = {
+      timer: 0,
+      iframes: 0,
+      ready: false,
+    };
   }
   /**
    * * Draws the player
@@ -52,7 +67,33 @@ class Player {
   draw = (ctx) => {
     // Deleted the depricated stuff btw
     // ! THE COLOR IS CHANGED IN THE LASER JS AND DECIDED IF HIT OR NOT
-    ctx.fillStyle = this.color.current
+    // * not anymore btw
+    if (this.iframes > 0) {
+      if (this.iframes % 60 == 0) {
+        this.color.current = this.color.hit.color1;
+      } else if (this.iframes % 60 == 30) {
+        this.color.current = this.color.hit.color2;
+      }
+    } else if (this.dash.iframes > 0) {
+      this.color.current = this.color.dash.active;
+    } else {
+      this.color.current = this.color.idle;
+    }
+
+    this.color.dash.opacity -= 1 / 30;
+    if (this.color.dash.opacity < 0) {
+      this.color.dash.opacity = 0;
+    }
+    this.color.dash.ready = `rgb(255, 255, 0, ${this.color.dash.opacity})`;
+
+    ctx.fillStyle = this.color.current;
+    ctx.fillRect(
+      this.pos.x - this.size / 2,
+      this.pos.y - this.size / 2,
+      this.size,
+      this.size
+    );
+    ctx.fillStyle = this.color.dash.ready;
     ctx.fillRect(
       this.pos.x - this.size / 2,
       this.pos.y - this.size / 2,
@@ -63,13 +104,37 @@ class Player {
 
   /**
    * * So this is the method that handles player moevement
-   * @param {number} width 
+   * @param {number} width
    * Game widht
-   * @param {number} height 
+   * @param {number} height
    * Game height
    */
+
+  doADash = () => {
+    if (this.dash.timer > 0) return null;
+    let dashSide = this.keys.a
+      ? -1
+      : this.keys.d
+      ? 1
+      : Math.sign(this.speed.horizontal.current);
+    this.speed.horizontal.current = 25 * dashSide;
+    this.dash.iframes = 40;
+    this.dash.timer = 90;
+  };
+
   move = (width, height) => {
-    
+    // Extra update stuff
+    this.iframes--;
+    this.dash.iframes--;
+    this.dash.timer--;
+    if (this.dash.timer == 0) {
+      this.dash.ready = true;
+      this.color.dash.opacity = 1;
+    }
+    if (this.dash.timer == 30) {
+      this.dash.ready = false;
+    }
+
     // vertical movement
     if (this.keys.space && this.keys.s) {
       this.speed.vertical.current = 0;
@@ -103,17 +168,19 @@ class Player {
       }
     } else {
       if (!this.speed.horizontal.current == 0) {
-        this.speed.horizontal.current +=
-          Math.sign(this.speed.horizontal.current) *
-          this.speed.horizontal.deaccelearation;
+        this.speed.horizontal.current -= this.speed.horizontal.current / 30;
       }
     }
     if (
       Math.abs(this.speed.horizontal.current) > this.speed.horizontal.top_speed
     ) {
-      this.speed.horizontal.current =
-        Math.sign(this.speed.horizontal.current) *
-        this.speed.horizontal.top_speed;
+      if (this.dash.iframes > 0) {
+        this.speed.horizontal.current -= this.speed.horizontal.current / 10;
+      } else {
+        this.speed.horizontal.current =
+          this.speed.horizontal.top_speed *
+          Math.sign(this.speed.horizontal.current);
+      }
     }
 
     // add speed

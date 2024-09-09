@@ -1,8 +1,6 @@
 /**
  * * Welcome to laser.js
  * * One of the projectile / attack types
- * TODO: Add hit detection
- * TODO: Add amount of time waited for it to spawn and dispawn
  */
 export default class Laser {
   /**
@@ -15,9 +13,9 @@ export default class Laser {
    * * Width of the laser
    * @param {number} h
    * * Height of the laser
-   * @param {number} ta
+   * @param {number} tu
    * * Time until the hitbox is on (i forgot the game term lol)
-   * @param {number} th
+   * @param {number} ta
    * * Time until the hitbox is turned off
    * @param {number} tw
    * * Time until the hitbox is turned on where a less opacity version of the attack appears
@@ -31,8 +29,8 @@ export default class Laser {
     this.height = h;
     this.opacity = {
       current: 0,
-      step: 0.3 / tw
-    }
+      step: 0.3 / tw,
+    };
     this.color = {
       active: "rgba(255, 0, 0, 1)",
       pre_active: `rgba(255, 0, 0, ${this.opacity.current})`,
@@ -46,6 +44,8 @@ export default class Laser {
         pre_active: tw,
       },
     };
+    this.dead = false;
+    this.horizontal = w > h;
   }
 
   /**
@@ -57,12 +57,28 @@ export default class Laser {
     if (this.hitbox.pre_active) {
       this.opacity.current += this.opacity.step;
       this.color.pre_active = `rgba(255, 0, 0, ${this.opacity.current})`;
-      ctx.fillStyle = this.color.pre_active
+      ctx.fillStyle = this.color.pre_active;
       ctx.fillRect(this.pos.x, this.pos.y, this.width, this.height);
     }
 
     if (this.hitbox.on) {
+      this.opacity.current = 1;
       ctx.fillStyle = this.color.active;
+      ctx.fillRect(this.pos.x, this.pos.y, this.width, this.height);
+    }
+
+    if (this.dead && this.width >= 0 && this.height >= 0) {
+      let decreaseSize = this.horizontal ? this.height / 10 : this.width / 10;
+      this.opacity.current -= 0.05;
+      this.color.pre_active = `rgba(255, 0, 0, ${this.opacity.current})`;
+      if (this.horizontal) {
+        this.pos.y += decreaseSize / 2;
+        this.height -= decreaseSize;
+      } else {
+        this.pos.x += decreaseSize / 2;
+        this.width -= decreaseSize;
+      }
+      ctx.fillStyle = this.color.pre_active;
       ctx.fillRect(this.pos.x, this.pos.y, this.width, this.height);
     }
   };
@@ -73,11 +89,9 @@ export default class Laser {
    * * The player object
    */
   check = (target) => {
-    // Reset
-    target.color.current = target.color.idle;
-
-    // Check if it has ran out
-    if (this.hitbox.timer.active <= 0) return null;
+    if (this.dead) return null;
+    // // Check if it has ran out
+    // if (this.hitbox.timer.active <= 0) return null;
 
     // Timer down until the hitbox is on
     this.hitbox.timer.until_active--;
@@ -97,6 +111,7 @@ export default class Laser {
     if (this.hitbox.timer.active == 0) {
       this.hitbox.on = false;
       this.hitbox.pre_active = false;
+      this.dead = true;
     }
 
     // Check for hit
@@ -105,10 +120,12 @@ export default class Laser {
       target.pos.x + target.size / 2 >= this.pos.x &&
       target.pos.x - target.size / 2 <= this.pos.x + this.width &&
       target.pos.y + target.size / 2 >= this.pos.y &&
-      target.pos.y - target.size / 2 <= this.pos.y + this.height
+      target.pos.y - target.size / 2 <= this.pos.y + this.height &&
+      target.iframes <= 0 &&
+      target.dash.iframes <= 0
     ) {
-      target.color.current = target.color.hit;
-      console.log("HIT")
+      target.iframes = 120;
+      target.hit++;
     }
   };
 }
