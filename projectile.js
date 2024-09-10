@@ -73,14 +73,12 @@ export default class Projectile {
     let deltaX = this.speed;
     let deltaY;
 
-    if (this.angle == 0) {
-      deltaY = this.speed;
-    } else if (this.angle == 180) {
-      deltaY = -this.speed;
-    } else if (this.angle > 0 && this.angle < 180) {
-      deltaY = deltaX / Math.tan((this.angle * Math.PI) / 180);
-    } else if (this.angle > 180 && this.angle < 360) {
-      deltaY = -deltaX / Math.tan((this.angle * Math.PI) / 180);
+    if (this.angle == Math.PI || this.angle == 0) {
+      deltaY = 0;
+    } else if (this.angle > 0 && this.angle < Math.PI) {
+      deltaY = deltaX / this.angle;
+    } else if (this.angle > Math.PI && this.angle < 2 * Math.PI) {
+      deltaY = -deltaX / Math.tan((this.angle * Math.PI) / Math.PI);
     }
 
     console.log({ dx: deltaX, dy: deltaY });
