@@ -53,7 +53,7 @@ const main = {
 
   drawGUI: (ctx) => {
     ctx.font = "50px Arial";
-    ctx.fillStyle = "navy";
+    ctx.fillStyle = main.player.color.current;
     ctx.textBaseline = "top";
     ctx.textAlign = "start";
     ctx.fillText(main.player.hit, 10, 10);
