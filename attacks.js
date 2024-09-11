@@ -2,7 +2,7 @@ import Laser from "./laser.js";
 import Projectile from "./projectile.js";
 
 const initAttacks = (main) => {
-  // // ! DEBUG LASER
+  // ! DEBUG LASER
   // main.attacks.push(
   //   new Laser(500, 0, 100, main.height, 1.5 * 60, 30000 * 60, 0.5 * 60)
   // );

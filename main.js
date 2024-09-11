@@ -1,14 +1,11 @@
 /**
  * * You opened the main file, cool
  * * So uhh this is the file that contains all files here (not all but you get the idea)
- * TODO: Hit system
- * TODO: Bossfight or smth i dunno
  * TODO: Refining
  */
 
 import Player from "./player.js";
 import Background from "./background.js";
-import Laser from "./laser.js";
 import initAttacks from "./attacks.js";
 
 // Display
@@ -36,6 +33,7 @@ const main = {
   // Game objects
   player: new Player(1024 / 2, 768 / 2),
   background: new Background("./assets/image2.jpg", 0, 0, 10240, 7680),
+  // background: new Background(null, 0, 0, 10240, 7680),
   attacks: [],
 
   /**
@@ -105,10 +103,10 @@ const main = {
     });
 
     window.addEventListener("keypress", (event) => {
-      if(event.code === "KeyF") {
+      if (event.code === "KeyF") {
         main.player.doADash();
       }
-    })
+    });
 
     // Attacks
     initAttacks(main);
