@@ -9,16 +9,18 @@ export default class Projectile {
    * * Horizontal position of the projectile
    * @param {number} y
    * * Vertical position of the projectile
-   * @param {number} a
-   * * Angle of the projectile
-   * @param {number} s
+   * @param {number} xs
    * * Horizontal of the projectile
+   * @param {number} ys
+   * * Vertical of the projectile
+   * @param {number} t
+   * * Time where the hitbox is active
    * @param {number} r
    * * Radius of the projectile
    * @param {number} p
    * * If the projectile pierces or not
    */
-  constructor(x, y, a, s, r, p) {
+  constructor(x, y, xs, ys, t, r, p) {
     this.pos = {
       x: x,
       y: y,
@@ -27,9 +29,13 @@ export default class Projectile {
     this.color = "rgba(255, 0, 0, 1)";
     this.hitbox = false;
     this.dead = false;
-    this.speed = s;
+    this.prestart = true;
+    this.speed = {
+      horizontal: xs,
+      vertical: ys,
+    };
     this.pierce = p;
-    this.angle = a;
+    this.timer = t;
   }
 
   /**
@@ -38,6 +44,9 @@ export default class Projectile {
    * * As always, context for drawing
    */
   draw = (ctx) => {
+    if (this.prestart) {
+      return null;
+    }
     if (!this.dead) {
       ctx.fillStyle = this.color;
       ctx.beginPath();
@@ -51,7 +60,7 @@ export default class Projectile {
       return null;
     }
 
-    let decreaseSize = this.radius / 10;
+    let decreaseSize = this.radius / 2;
     this.radius -= decreaseSize;
     ctx.fillStyle = this.color;
     ctx.beginPath();
@@ -62,31 +71,38 @@ export default class Projectile {
 
   /**
    * * Collision detection with player
-   * @param {object} player
+   * @param {object} target
    * * The player object
+   * @param {number} w
+   * * Screen width
+   * @param {number} h
+   * * Screen height
    */
-  check = (target) => {
+  check = (target, w, h) => {
+    this.timer--;
+    if (!this.hitbox && this.timer <= 0) {
+      this.prestart = false;
+      this.dead = false;
+      this.hitbox = true;
+    }
+
+    if (this.prestart) return null;
+
     // Check if it has ran out
     if (this.dead) return null;
 
     // Move
-    let deltaX = this.speed;
-    let deltaY;
-
-    if (this.angle == Math.PI || this.angle == 0) {
-      deltaY = 0;
-    } else if (this.angle > 0 && this.angle < Math.PI) {
-      deltaY = deltaX / this.angle;
-    } else if (this.angle > Math.PI && this.angle < 2 * Math.PI) {
-      deltaY = -deltaX / Math.tan((this.angle * Math.PI) / Math.PI);
+    this.pos.x += this.speed.horizontal;
+    this.pos.y += this.speed.vertical;
+    if (
+      this.pos.x + this.radius < 0 ||
+      this.pos.x - this.radius > w ||
+      this.pos.y + this.radius < 0 ||
+      this.pos.y - this.radius > h
+    ) {
+      this.dead = true;
+      this.hitbox = false;
     }
-
-    console.log({ dx: deltaX, dy: deltaY });
-
-    this.pos.x += deltaX;
-    this.pos.y += deltaY;
-
-    // if()
 
     // Check for hit
     if (!this.hitbox) return null;
@@ -94,12 +110,14 @@ export default class Projectile {
     let edgeX = this.pos.x,
       edgeY = this.pos.y;
 
-    if (this.pos.x < target.pos.x) edgeX = target.pos.x;
-    if (this.pos.x > target.pos.x + target.width)
-      edgeX = target.pos.x + target.width;
-    if (this.pos.y < target.pos.y) edgeY = target.pos.y;
-    if (this.pos.y > target.pos.y + target.height)
-      edgeY = target.pos.y + target.height;
+    if (this.pos.x < target.pos.x - target.size / 2)
+      edgeX = target.pos.x - target.size / 2;
+    if (this.pos.x > target.pos.x + target.size / 2)
+      edgeX = target.pos.x + target.size / 2;
+    if (this.pos.y < target.pos.y - target.size / 2)
+      edgeY = target.pos.y - target.size / 2;
+    if (this.pos.y > target.pos.y + target.size / 2)
+      edgeY = target.pos.y + target.size / 2;
 
     let distX = this.pos.x - edgeX;
     let distY = this.pos.y - edgeY;

@@ -127,7 +127,7 @@ const main = {
     // Update and checks
     main.player.move(main.genuine_width, main.genuine_height);
     main.attacks.forEach((element) => {
-      element.check(main.player, ctx);
+      element.check(main.player, main.width, main.height);
     });
 
     // Drawing
