@@ -108,6 +108,40 @@ const main = {
       }
     });
 
+    const aButton = document.getElementById("aButton");
+    const wButton = document.getElementById("wButton");
+    const sButton = document.getElementById("sButton");
+    const dButton = document.getElementById("dButton");
+    const dashButton = document.getElementById("dashButton");
+
+    aButton.addEventListener("touchstart", (event) => {
+      main.player.keys.a = true;
+    });
+    wButton.addEventListener("touchstart", (event) => {
+      main.player.keys.space = true;
+    });
+    sButton.addEventListener("touchstart", (event) => {
+      main.player.keys.s = true;
+    });
+    dButton.addEventListener("touchstart", (event) => {
+      main.player.keys.d = true;
+    });
+    dashButton.addEventListener("touchstart", (event) => {
+      main.player.doADash();
+    });
+    aButton.addEventListener("touchend", (event) => {
+      main.player.keys.a = false;
+    });
+    wButton.addEventListener("touchend", (event) => {
+      main.player.keys.space = false;
+    });
+    sButton.addEventListener("touchend", (event) => {
+      main.player.keys.s = false;
+    });
+    dButton.addEventListener("touchend", (event) => {
+      main.player.keys.d = false;
+    });
+
     // Attacks
     initAttacks(main);
 

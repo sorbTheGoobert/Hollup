@@ -8,10 +8,147 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: green;
+}
+
+.container {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-wrap: wrap;
+  /* flex-direction: column; */
+  /* justify-content: center; */
+  align-items: center;
+  gap: 50px;
 }
 
 #game {
   border: 5px solid yellow;
   width: 90vh;
   aspect-ratio: 1024 / 768;
+}
+
+.buttonContainer {
+  display: none;
+  position: relative;
+  left: 0;
+  top: 0;
+  width: 150px;
+  height: 150px;
+  background-color: black;
+}
+
+.button {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.button#aButton {
+  top: 50px;
+  left: 0;
+}
+
+.button#wButton {
+  top: 0px;
+  left: 50px;
+}
+
+.button#sButton {
+  top: 100px;
+  left: 50px;
+}
+
+.button#dButton {
+  top: 50px;
+  left: 100px;
+}
+
+.button#dashButton {
+  top: 50px;
+  left: 50px;
+  font-size: 16px;
+  text-align: center;
+  padding: 0;
+}
+
+
+
+@media screen and (pointer:coarse) {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .container {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    /* flex-direction: column; */
+    /* justify-content: center; */
+    align-items: center;
+    gap: 10px;
+  }
+
+  #game {
+    border: 5px solid yellow;
+    width: 90vh;
+    aspect-ratio: 1024 / 768;
+  }
+
+  .buttonContainer {
+    display: block;
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 90px;
+    height: 90px;
+    background-color: black;
+  }
+
+  .button {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  .button#aButton {
+    top: 30px;
+    left: 0;
+  }
+
+  .button#wButton {
+    top: 0px;
+    left: 30px;
+  }
+
+  .button#sButton {
+    top: 60px;
+    left: 30px;
+  }
+
+  .button#dButton {
+    top: 30px;
+    left: 60px;
+  }
+
+  .button#dashButton {
+    top: 30px;
+    left: 30px;
+    font-size: 10px;
+    text-align: center;
+    padding: 0;
+  }
 }
