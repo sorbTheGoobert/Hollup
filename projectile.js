@@ -10,9 +10,13 @@ export default class Projectile {
    * @param {number} y
    * * Vertical position of the projectile
    * @param {number} xs
-   * * Horizontal of the projectile
+   * * Horizontal max velocity of the projectile
    * @param {number} ys
-   * * Vertical of the projectile
+   * * Vertical max velocity of the projectile
+   * @param {number} xa
+   * * Horizontal accelaration of the projectile (Put to high amount for non accelarated boolet)
+   * @param {number} ya
+   * * Vertical accelaration of the projectile (Put to high amount for non accelarated boolet)
    * @param {number} t
    * * Time where the hitbox is active
    * @param {number} r
@@ -20,7 +24,7 @@ export default class Projectile {
    * @param {number} p
    * * If the projectile pierces or not
    */
-  constructor(x, y, xs, ys, t, r, p) {
+  constructor(x, y, xs, ys, xa, ya, t, r, p) {
     this.pos = {
       x: x,
       y: y,
@@ -31,8 +35,16 @@ export default class Projectile {
     this.dead = false;
     this.prestart = true;
     this.speed = {
-      horizontal: xs,
-      vertical: ys,
+      horizontal: {
+        current: 0,
+        accel: xa,
+        cap: xs
+      },
+      vertical: {
+        current: 0,
+        accel: ya,
+        cap: ys
+      },
     };
     this.pierce = p;
     this.timer = t;
@@ -91,9 +103,19 @@ export default class Projectile {
     // Check if it has ran out
     if (this.dead) return null;
 
+    // Accelarate
+    this.speed.horizontal.current += this.speed.horizontal.accel
+    this.speed.vertical.current += this.speed.vertical.accel
+    if (this.speed.horizontal.current > this.speed.horizontal.cap){
+      this.speed.horizontal.current = this.speed.horizontal.cap
+    }
+    if (this.speed.vertical.current > this.speed.vertical.cap){
+      this.speed.vertical.current = this.speed.vertical.cap
+    }
+
     // Move
-    this.pos.x += this.speed.horizontal;
-    this.pos.y += this.speed.vertical;
+    this.pos.x += this.speed.horizontal.current;
+    this.pos.y += this.speed.vertical.current;
     if (
       this.pos.x + this.radius < 0 ||
       this.pos.x - this.radius > w ||
