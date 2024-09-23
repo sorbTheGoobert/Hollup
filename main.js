@@ -164,7 +164,7 @@ const main = {
 
     // Drawing
     main.attacks.forEach((element) => {
-      element.draw(ctx);
+      element.draw(ctx, main);
     });
 
     main.drawGUI(ctx);

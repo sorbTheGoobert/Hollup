@@ -158,6 +158,8 @@ class Player {
             Math.sign(this.speed.horizontal.current) *
             this.speed.horizontal.deaccelearation;
         }
+        // * Use this if you want to but it kinda sucks
+        // this.speed.horizontal.current = 0;
       } else {
         if (this.keys.a) {
           this.speed.horizontal.current -= this.speed.horizontal.thrust;

@@ -1,11 +1,12 @@
 import { rect2circ } from "./projMethods/collision/rect2circ.js";
 import { accelarate } from "./projMethods/move/accelarate.js";
+import { homein } from "./projMethods/move/home.js";
 
 /**
  * * Welcome to projectile.js
  * * One of the projectile / attack types
  */
-export default class Projectile {
+export default class Homing {
   /**
    * * This is the constructor for Projectile
    * @param {number} x
@@ -22,14 +23,14 @@ export default class Projectile {
    * * Vertical accelaration of the projectile (Put to high amount for non accelarated boolet)
    * @param {number} t
    * * Time where the hitbox is active
+   * @param {number} tu
+   * * Time until the hitbox gets turned off
    * @param {number} r
    * * Radius of the projectile
    * @param {number} p
    * * If the projectile pierces or not
-   * @param {number} h
-   * * If the projectile homes or not
    */
-  constructor(x, y, xs, ys, xa, ya, t, r, p) {
+  constructor(x, y, xs, ys, xa, ya, t, tu, r, p) {
     this.pos = {
       x: x,
       y: y,
@@ -52,7 +53,10 @@ export default class Projectile {
       },
     };
     this.pierce = p;
-    this.timer = t;
+    this.timer = {
+      until: t,
+      on: tu,
+    };
     this.hit = false;
   }
 
@@ -108,11 +112,16 @@ export default class Projectile {
    * * Screen height
    */
   check = (target, w, h) => {
-    this.timer--;
-    if (this.timer <= 0) {
+    this.timer.until--;
+    if (this.timer.until <= 0) {
+      this.timer.on--;
       this.hitbox = true;
       this.prestart = false;
       if (this.hit && !this.pierce) {
+        this.hitbox = false;
+        this.timer.on = 0;
+      }
+      if (this.timer.on <= 0) {
         this.hitbox = false;
       }
     }
@@ -133,27 +142,31 @@ export default class Projectile {
     //   this.speed.vertical.current = this.speed.vertical.cap;
     // }
 
-    [this.speed.horizontal.current, this.speed.vertical.current] = accelarate(
+    [this.speed.horizontal.current, this.speed.vertical.current] = homein(
       this.speed.horizontal.current,
       this.speed.vertical.current,
       this.speed.horizontal.accel,
       this.speed.vertical.accel,
       this.speed.horizontal.cap,
-      this.speed.vertical.cap
+      this.speed.vertical.cap,
+      this.pos.x,
+      this.pos.y,
+      target.pos.x,
+      target.pos.y
     );
 
     // Move
     this.pos.x += this.speed.horizontal.current;
     this.pos.y += this.speed.vertical.current;
-    if (
-      this.pos.x + this.radius < 0 ||
-      this.pos.x - this.radius > w ||
-      this.pos.y + this.radius < 0 ||
-      this.pos.y - this.radius > h
-    ) {
-      this.dead = true;
-      this.hitbox = false;
-    }
+    // if (
+    //   this.pos.x + this.radius < 0 ||
+    //   this.pos.x - this.radius > w ||
+    //   this.pos.y + this.radius < 0 ||
+    //   this.pos.y - this.radius > h
+    // ) {
+    //   this.dead = true;
+    //   this.hitbox = false;
+    // }
 
     // Check for hit
     if (!this.hitbox) return null;
