@@ -33,21 +33,22 @@ export default class Projectile {
     this.color = "rgba(255, 0, 0, 1)";
     this.hitbox = false;
     this.dead = false;
-    this.prestart = true;
+    this.prestart = false;
     this.speed = {
       horizontal: {
         current: 0,
         accel: xa,
-        cap: xs
+        cap: xs,
       },
       vertical: {
         current: 0,
         accel: ya,
-        cap: ys
+        cap: ys,
       },
     };
     this.pierce = p;
     this.timer = t;
+    this.hit = false;
   }
 
   /**
@@ -92,10 +93,12 @@ export default class Projectile {
    */
   check = (target, w, h) => {
     this.timer--;
-    if (!this.hitbox && this.timer <= 0) {
-      this.prestart = false;
-      this.dead = false;
-      this.hitbox = true;
+    if (this.timer <= 0) {
+      if (this.hit && !this.pierce) {
+        this.hitbox = true;
+      } else {
+        this.hitbox = true;
+      }
     }
 
     if (this.prestart) return null;
@@ -104,13 +107,13 @@ export default class Projectile {
     if (this.dead) return null;
 
     // Accelarate
-    this.speed.horizontal.current += this.speed.horizontal.accel
-    this.speed.vertical.current += this.speed.vertical.accel
-    if (this.speed.horizontal.current > this.speed.horizontal.cap){
-      this.speed.horizontal.current = this.speed.horizontal.cap
+    this.speed.horizontal.current += this.speed.horizontal.accel;
+    this.speed.vertical.current += this.speed.vertical.accel;
+    if (this.speed.horizontal.current > this.speed.horizontal.cap) {
+      this.speed.horizontal.current = this.speed.horizontal.cap;
     }
-    if (this.speed.vertical.current > this.speed.vertical.cap){
-      this.speed.vertical.current = this.speed.vertical.cap
+    if (this.speed.vertical.current > this.speed.vertical.cap) {
+      this.speed.vertical.current = this.speed.vertical.cap;
     }
 
     // Move

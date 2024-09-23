@@ -7,7 +7,7 @@ const initAttacks = (main) => {
   //   new Laser(500, 0, 100, main.height, 1.5 * 60, 30000 * 60, 0.5 * 60)
   // );
   // ! DEBUG PROJECTILE
-  main.attacks.push(new Projectile(100, 100, 10, 10, 0.01, 0.01, 0, 15, false));
+  main.attacks.push(new Projectile(0, 0, 100, 100, 0.3, 0.05, 0, 15, false));
 
   // // Attacks
   // const firstBatchTime = 3 * 60;
