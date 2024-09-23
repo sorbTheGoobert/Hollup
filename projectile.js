@@ -1,3 +1,5 @@
+import { rect2circ } from "./projMethods/collision/rect2circ.js";
+
 /**
  * * Welcome to projectile.js
  * * One of the projectile / attack types
@@ -33,7 +35,7 @@ export default class Projectile {
     this.color = "rgba(255, 0, 0, 1)";
     this.hitbox = false;
     this.dead = false;
-    this.prestart = false;
+    this.prestart = true;
     this.speed = {
       horizontal: {
         current: 0,
@@ -94,14 +96,16 @@ export default class Projectile {
   check = (target, w, h) => {
     this.timer--;
     if (this.timer <= 0) {
+      debugger
+      this.hitbox = true;
+      this.prestart = false;
       if (this.hit && !this.pierce) {
-        this.hitbox = true;
-      } else {
-        this.hitbox = true;
+        this.hitbox = false;
       }
     }
 
     if (this.prestart) return null;
+    // console.log(this.prestart)
 
     // Check if it has ran out
     if (this.dead) return null;
@@ -132,27 +136,20 @@ export default class Projectile {
     // Check for hit
     if (!this.hitbox) return null;
 
-    let edgeX = this.pos.x,
-      edgeY = this.pos.y;
-
-    if (this.pos.x < target.pos.x - target.size / 2)
-      edgeX = target.pos.x - target.size / 2;
-    if (this.pos.x > target.pos.x + target.size / 2)
-      edgeX = target.pos.x + target.size / 2;
-    if (this.pos.y < target.pos.y - target.size / 2)
-      edgeY = target.pos.y - target.size / 2;
-    if (this.pos.y > target.pos.y + target.size / 2)
-      edgeY = target.pos.y + target.size / 2;
-
-    let distX = this.pos.x - edgeX;
-    let distY = this.pos.y - edgeY;
-    let dist = Math.sqrt(distX * distX + distY * distY);
-
     if (
-      dist <= this.radius &&
+      rect2circ(
+        this.pos.x,
+        this.pos.y,
+        this.radius,
+        target.pos.x,
+        target.pos.y,
+        target.size,
+        target.size
+      ) &&
       target.iframes <= 0 &&
       target.dash.iframes <= 0
     ) {
+      console.log("HIT");
       if (!this.pierce) {
         this.hitbox = false;
         this.dead = true;
@@ -160,7 +157,6 @@ export default class Projectile {
       target.iframes = 120;
       target.hit++;
     }
-
     return null;
   };
 }

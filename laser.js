@@ -1,3 +1,5 @@
+import { rect2rect } from "./projMethods/collision/rect2rect.js";
+
 /**
  * * Welcome to laser.js
  * * One of the projectile / attack types
@@ -116,11 +118,28 @@ export default class Laser {
 
     // Check for hit
     if (!this.hitbox.on) return null;
+    // if (
+    //   target.pos.x + target.size / 2 >= this.pos.x &&
+    //   target.pos.x - target.size / 2 <= this.pos.x + this.width &&
+    //   target.pos.y + target.size / 2 >= this.pos.y &&
+    //   target.pos.y - target.size / 2 <= this.pos.y + this.height &&
+    //   target.iframes <= 0 &&
+    //   target.dash.iframes <= 0
+    // ) {
+    //   target.iframes = 120;
+    //   target.hit++;
+    // }
     if (
-      target.pos.x + target.size / 2 >= this.pos.x &&
-      target.pos.x - target.size / 2 <= this.pos.x + this.width &&
-      target.pos.y + target.size / 2 >= this.pos.y &&
-      target.pos.y - target.size / 2 <= this.pos.y + this.height &&
+      rect2rect(
+        target.pos.x,
+        target.pos.y,
+        target.size,
+        target.size,
+        this.pos.x,
+        this.pos.y,
+        this.width,
+        this.height
+      ) &&
       target.iframes <= 0 &&
       target.dash.iframes <= 0
     ) {
