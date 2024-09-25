@@ -10,7 +10,72 @@ const initAttacks = (main) => {
   // ! DEBUG PROJECTILE
   // main.attacks.push(new Projectile(0, 0, 3, 3, 0.1, 0.05, 10, 15, false));
   // ! DEBUG HOMING PROJECTILE
-  main.attacks.push(new Homing(100, 100, 5, 5, 0.25, 0.25, 0, 1000000, 10, true))
+  const accel = [];
+  const max = [];
+  for (let i = 0; i < 4; i++) {
+    accel.push(Math.random() * 1.5);
+    max.push(Math.floor(Math.random() * 3) + 5);
+  }
+  main.attacks.push(
+    new Homing(
+      512,
+      360,
+      10,
+      10,
+      accel[0],
+      max[0],
+      0,
+      100000000,
+      0.5 * 60,
+      10,
+      true
+    )
+  );
+  main.attacks.push(
+    new Homing(
+      512,
+      360,
+      10,
+      -10,
+      accel[1],
+      max[1],
+      0,
+      100000000,
+      0.5 * 60,
+      10,
+      true
+    )
+  );
+  main.attacks.push(
+    new Homing(
+      512,
+      360,
+      -10,
+      10,
+      accel[2],
+      max[2],
+      0,
+      100000000,
+      0.5 * 60,
+      10,
+      true
+    )
+  );
+  main.attacks.push(
+    new Homing(
+      512,
+      360,
+      -10,
+      -10,
+      accel[3],
+      max[3],
+      0,
+      100000000,
+      0.5 * 60,
+      10,
+      true
+    )
+  );
 
   // // Attacks
   // const firstBatchTime = 3 * 60;
@@ -346,4 +411,4 @@ const initAttacks = (main) => {
   // }
 };
 
-export default initAttacks
+export default initAttacks;

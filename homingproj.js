@@ -8,54 +8,37 @@ import { homein } from "./projMethods/move/home.js";
  */
 export default class Homing {
   /**
-   * * This is the constructor for Projectile
-   * @param {number} x
-   * * Horizontal position of the projectile
-   * @param {number} y
-   * * Vertical position of the projectile
-   * @param {number} xs
-   * * Horizontal max velocity of the projectile
-   * @param {number} ys
-   * * Vertical max velocity of the projectile
-   * @param {number} xa
-   * * Horizontal accelaration of the projectile (Put to high amount for non accelarated boolet)
-   * @param {number} ya
-   * * Vertical accelaration of the projectile (Put to high amount for non accelarated boolet)
-   * @param {number} t
-   * * Time where the hitbox is active
-   * @param {number} tu
-   * * Time until the hitbox gets turned off
-   * @param {number} r
-   * * Radius of the projectile
-   * @param {number} p
-   * * If the projectile pierces or not
+   * * This is the constructer for homing projectiles
+   * @param {number} x - Initial x position
+   * @param {number} y - Initial y position
+   * @param {number} a - Acceleration
+   * @param {number} m - Max speed
+   * @param {number} t - Time until it spawns
+   * @param {number} tu - Time until it despawns
+   * @param {number} r - Radius
+   * @param {number} p - If the projectile pierces or not
    */
-  constructor(x, y, xs, ys, xa, ya, t, tu, r, p) {
+  constructor(x, y, xs, ys, a, m, t, tu, th, r, p) {
     this.pos = {
       x: x,
       y: y,
     };
     this.radius = r;
-    this.color = "rgba(255, 0, 0, 1)";
+    this.color = "rgba(255, 128, 0, 1)";
     this.hitbox = false;
     this.dead = false;
     this.prestart = true;
     this.speed = {
-      horizontal: {
-        current: 0,
-        accel: xa,
-        cap: xs,
-      },
-      vertical: {
-        current: 0,
-        accel: ya,
-        cap: ys,
-      },
+      horizontal: xs,
+      vertical: ys,
+      accel: a,
+      max: m,
     };
     this.pierce = p;
     this.timer = {
       until: t,
       on: tu,
+      holdon: th,
     };
     this.hit = false;
   }
@@ -132,6 +115,15 @@ export default class Homing {
     // Check if it has ran out
     if (this.dead) return null;
 
+    if (this.timer.holdon > 0) {
+      this.timer.holdon--;
+      this.speed.horizontal = Math.max(this.speed.horizontal - this.speed.accel, Math.sign(this.speed.horizontal) * 1);
+      this.speed.vertical = Math.max(this.speed.vertical - this.speed.accel, Math.sign(this.speed.vertical) * 1);
+      this.pos.x += Math.max(this.speed.horizontal, Math.sign(this.speed.horizontal) * 1)
+      this.pos.y += Math.max(this.speed.vertical, Math.sign(this.speed.vertical) * 1)
+      return null;
+    }
+
     // // Accelarate
     // this.speed.horizontal.current += this.speed.horizontal.accel;
     // this.speed.vertical.current += this.speed.vertical.accel;
@@ -142,13 +134,11 @@ export default class Homing {
     //   this.speed.vertical.current = this.speed.vertical.cap;
     // }
 
-    [this.speed.horizontal.current, this.speed.vertical.current] = homein(
-      this.speed.horizontal.current,
-      this.speed.vertical.current,
-      this.speed.horizontal.accel,
-      this.speed.vertical.accel,
-      this.speed.horizontal.cap,
-      this.speed.vertical.cap,
+    [this.speed.horizontal, this.speed.vertical] = homein(
+      this.speed.horizontal,
+      this.speed.vertical,
+      this.speed.accel,
+      this.speed.max,
       this.pos.x,
       this.pos.y,
       target.pos.x,
@@ -156,8 +146,8 @@ export default class Homing {
     );
 
     // Move
-    this.pos.x += this.speed.horizontal.current;
-    this.pos.y += this.speed.vertical.current;
+    this.pos.x += this.speed.horizontal;
+    this.pos.y += this.speed.vertical;
     // if (
     //   this.pos.x + this.radius < 0 ||
     //   this.pos.x - this.radius > w ||
