@@ -106,6 +106,7 @@ export default class Homing {
       }
       if (this.timer.on <= 0) {
         this.hitbox = false;
+        this.dead = true
       }
     }
 

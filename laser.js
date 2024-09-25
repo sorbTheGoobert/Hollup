@@ -1,4 +1,5 @@
 import { rect2rect } from "./projMethods/collision/rect2rect.js";
+import { accelarate } from "./projMethods/move/accelarate.js";
 
 /**
  * * Welcome to laser.js
@@ -91,6 +92,7 @@ export default class Laser {
    * * The player object
    */
   check = (target) => {
+
     if (this.dead) return null;
     // // Check if it has ran out
     // if (this.hitbox.timer.active <= 0) return null;

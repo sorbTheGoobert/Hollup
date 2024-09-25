@@ -1,6 +1,7 @@
 import Homing from "./homingproj.js";
 import Laser from "./laser.js";
 import Projectile from "./projectile.js";
+import { movingLaser } from "./movingLaser.js";
 
 const initAttacks = (main) => {
   // ! DEBUG LASER
@@ -12,70 +13,95 @@ const initAttacks = (main) => {
   // ! DEBUG HOMING PROJECTILE
   const accel = [];
   const max = [];
-  for (let i = 0; i < 4; i++) {
-    accel.push(Math.random() * 1.5);
-    max.push(Math.floor(Math.random() * 3) + 5);
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 4; j++) {
+      let x, y;
+      switch (j) {
+        case 0:
+          x = 0;
+          y = 0;
+          break;
+        case 1:
+          x = main.width;
+          y = 0;
+          break;
+        case 2:
+          x = 0;
+          y = main.height;
+          break;
+        case 3:
+          x = main.width;
+          y = main.height;
+          break;
+      }
+      console.log(x, y);
+      main.attacks.push(
+        new Homing(
+          x,
+          y,
+          10,
+          10,
+          Math.random() * 1.5,
+          Math.floor(Math.random() * 3) + 5,
+          5 * 60 + i * 60,
+          5 * 60,
+          0.5 * 60,
+          15,
+          true
+        )
+      );
+      main.attacks.push(
+        new Homing(
+          x,
+          y,
+          10,
+          -10,
+          Math.random() * 1.5,
+          Math.floor(Math.random() * 3) + 5,
+          2 * 60 + i * 60 * 5,
+          5 * 60,
+          0.5 * 60,
+          15,
+          true
+        )
+      );
+      main.attacks.push(
+        new Homing(
+          x,
+          y,
+          -10,
+          10,
+          Math.random() * 1.5,
+          Math.floor(Math.random() * 3) + 5,
+          2 * 60 + i * 60 * 5,
+          5 * 60,
+          0.5 * 60,
+          15,
+          true
+        )
+      );
+      main.attacks.push(
+        new Homing(
+          x,
+          y,
+          -10,
+          -10,
+          Math.random() * 1.5,
+          Math.floor(Math.random() * 3) + 5,
+          2 * 60 + i * 60 * 5,
+          5 * 60,
+          0.5 * 60,
+          15,
+          true
+        )
+      );
+    }
   }
-  main.attacks.push(
-    new Homing(
-      512,
-      360,
-      10,
-      10,
-      accel[0],
-      max[0],
-      0,
-      100000000,
-      0.5 * 60,
-      10,
-      true
-    )
-  );
-  main.attacks.push(
-    new Homing(
-      512,
-      360,
-      10,
-      -10,
-      accel[1],
-      max[1],
-      0,
-      100000000,
-      0.5 * 60,
-      10,
-      true
-    )
-  );
-  main.attacks.push(
-    new Homing(
-      512,
-      360,
-      -10,
-      10,
-      accel[2],
-      max[2],
-      0,
-      100000000,
-      0.5 * 60,
-      10,
-      true
-    )
-  );
-  main.attacks.push(
-    new Homing(
-      512,
-      360,
-      -10,
-      -10,
-      accel[3],
-      max[3],
-      0,
-      100000000,
-      0.5 * 60,
-      10,
-      true
-    )
-  );
+  for (let i = 0; i < 40; i++) {
+    main.attacks.push(new movingLaser(
+      0, 0, 50, main.height, 2 * 60 + i * 60 * 5, 
+    ));
+  }
 
   // // Attacks
   // const firstBatchTime = 3 * 60;
