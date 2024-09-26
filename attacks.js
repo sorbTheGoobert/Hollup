@@ -41,7 +41,7 @@ const initAttacks = (main) => {
           y,
           10,
           10,
-          Math.random() * 1.5,
+          Math.random(),
           Math.floor(Math.random() * 3) + 5,
           5 * 60 + i * 60,
           5 * 60,
@@ -56,7 +56,7 @@ const initAttacks = (main) => {
           y,
           10,
           -10,
-          Math.random() * 1.5,
+          Math.random(),
           Math.floor(Math.random() * 3) + 5,
           2 * 60 + i * 60 * 5,
           5 * 60,
@@ -71,7 +71,7 @@ const initAttacks = (main) => {
           y,
           -10,
           10,
-          Math.random() * 1.5,
+          Math.random(),
           Math.floor(Math.random() * 3) + 5,
           2 * 60 + i * 60 * 5,
           5 * 60,
@@ -86,7 +86,7 @@ const initAttacks = (main) => {
           y,
           -10,
           -10,
-          Math.random() * 1.5,
+          Math.random(),
           Math.floor(Math.random() * 3) + 5,
           2 * 60 + i * 60 * 5,
           5 * 60,
@@ -97,10 +97,41 @@ const initAttacks = (main) => {
       );
     }
   }
-  for (let i = 0; i < 40; i++) {
-    main.attacks.push(new movingLaser(
-      0, 0, 50, main.height, 2 * 60 + i * 60 * 5, 
-    ));
+  for (let i = 0; i < 5; i++) {
+    main.attacks.push(
+      new movingLaser(
+        0,
+        0,
+        100,
+        main.height,
+        2 * 60 + i * 60 * 4,
+        5 * 60,
+        0.5 * 60,
+        5,
+        100,
+        0.25,
+        0,
+        0,
+        0
+      )
+    );
+    main.attacks.push(
+      new movingLaser(
+        main.width - 100,
+        0,
+        100,
+        main.height,
+        2 * 60 + 5 * 60 * 4 + i * 60 * 4,
+        5 * 60,
+        0.5 * 60,
+        -5,
+        100,
+        -0.25,
+        0,
+        0,
+        0
+      )
+    );
   }
 
   // // Attacks

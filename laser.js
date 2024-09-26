@@ -1,5 +1,4 @@
 import { rect2rect } from "./projMethods/collision/rect2rect.js";
-import { accelarate } from "./projMethods/move/accelarate.js";
 
 /**
  * * Welcome to laser.js
