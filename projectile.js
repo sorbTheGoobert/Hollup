@@ -35,7 +35,8 @@ export default class Projectile {
       y: y,
     };
     this.radius = r;
-    this.color = "rgba(255, 0, 0, 1)";
+    this.color = "rgba(255, 0, 0, 0)";
+    this.color_pointer = "rgba(255, 0, 0, 0.4)"
     this.hitbox = false;
     this.dead = false;
     this.prestart = true;
@@ -54,6 +55,7 @@ export default class Projectile {
     this.pierce = p;
     this.timer = t;
     this.hit = false;
+    this.opacity = 0;
   }
 
   /**
@@ -62,21 +64,34 @@ export default class Projectile {
    * * As always, context for drawing
    */
   draw = (ctx, main) => {
-    if (
-      rect2circ(
-        this.pos.x,
-        this.pos.y,
-        this.radius,
-        main.width / 2,
-        main.height / 2,
-        main.width,
-        main.height
-      )
-    )
-      if (this.prestart) {
+    if (this.prestart) {
+      if (this.timer >= 60) {
         return null;
       }
+      console.log(this.timer)
+      let step = 1 / 120;
+      this.opacity += step;
+      this.color = `rgba(255, 0, 0, ${this.opacity.toPrecision(3)})`;
+      console.log({ time: this.timer, color: this.color }, "Drawing pre hitbox!")
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      ctx.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.closePath();
+      return null;
+    }
+    this.color = "rgba(255, 0, 0, 1)";
     if (!this.dead) {
+      const linearGrad = ctx.createLinearGradient(this.pos.x, this.pos.y, this.pos.x + this.speed.horizontal.current * 30, this.pos.y + this.speed.vertical.current * 30);
+      linearGrad.addColorStop(0, this.color_pointer);
+      linearGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+      ctx.strokeStyle = linearGrad;
+      ctx.lineWidth = this.radius * 2
+      ctx.beginPath();
+      ctx.moveTo(this.pos.x, this.pos.y);
+      ctx.lineTo(this.pos.x + this.speed.horizontal.current * 30, this.pos.y + this.speed.vertical.current * 30);
+      ctx.stroke();
+      ctx.closePath();
       ctx.fillStyle = this.color;
       ctx.beginPath();
       ctx.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI);
