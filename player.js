@@ -55,6 +55,12 @@ class Player {
     this.hit = 0;
     this.iframes = 0;
     this.dash = {
+      doubleTapOverride: false,
+      doubleClick: {
+        og: 10,
+        timer: 0,
+        firstTap: false,
+      },
       timer: 0,
       iframes: 0,
       ready: false,
@@ -110,6 +116,22 @@ class Player {
    * Game height
    */
 
+  // ! THIS DOES NOT WORK.
+  // ! AT ALL
+  // doubleTapDash = (key) => {
+  //   console.log({ key, first: this.dash.doubleClick.firstTap });
+  //   if (
+  //     !this.dash.doubleClick.firstTap &&
+  //     key != this.dash.doubleClick.firstTap
+  //   ) {
+  //     this.dash.doubleClick.firstTap = key;
+  //     this.dash.doubleClick.timer = this.dash.doubleClick.og;
+  //   } else {
+  //     this.doADash();
+  //     this.dash.doubleClick.firstTap = null;
+  //   }
+  // };
+
   doADash = () => {
     if (this.dash.timer > 0) return null;
     let dashSide = this.keys.a
@@ -133,6 +155,10 @@ class Player {
     }
     if (this.dash.timer == 30) {
       this.dash.ready = false;
+    }
+    this.dash.doubleClick.timer--;
+    if (this.dash.doubleClick.timer <= 0) {
+      this.dash.doubleClick.firstTap = null;
     }
 
     // vertical movement

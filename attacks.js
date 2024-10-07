@@ -133,19 +133,19 @@ const initAttacks = (main) => {
   //   );
   // }
 
-  // * Init
-  let currentTime = 3 * 60;
+  // // * Init
+  // let currentTime = 3 * 60;
 
-  // * Main attacks
-  currentTime = thatoneannoyingstarterattack(main, currentTime);
+  // // * Main attacks
+  // currentTime = thatoneannoyingstarterattack(main, currentTime);
 
-  currentTime += 120;
-  currentTime = PILLARJHONSREVENGE(main, currentTime);
+  // currentTime += 120;
+  // currentTime = PILLARJHONSREVENGE(main, currentTime);
 
-  currentTime += 120;
-  currentTime = spiralHellstorm(main, currentTime);
+  // currentTime += 120;
+  // currentTime = spiralHellstorm(main, currentTime);
 
-  console.log(main.attacks.length);
+  // console.log(main.attacks.length);
 };
 
 export default initAttacks;

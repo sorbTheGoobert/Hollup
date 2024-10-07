@@ -1,7 +1,6 @@
 /**
  * * You opened the main file, cool
  * * So uhh this is the file that contains all files here (not all but you get the idea)
- * TODO: Refining
  */
 
 import Player from "./player.js";
@@ -16,6 +15,7 @@ const ctx = game.getContext("2d");
 /**
  * * OK this is the "main" object. It contains the background, player, projectiles, and lasers and stuff
  * ! SOME OF STUFF HERE IS DEPRECATED. SUCH AS THE LARGE MAP. ILL KEEP IT BECAUSE I MIGHT RETURN BACK TO IT
+ * fun fact i never did
  */
 const main = {
   // genuine_width: 10240,
@@ -32,7 +32,7 @@ const main = {
 
   // Game objects
   player: new Player(1024 / 2, 768 / 2),
-  background: new Background("./assets/image2.jpg", 0, 0, 10240, 7680),
+  background: new Background("./assets/image2.jpg", 0, 0, 1024 * 5, 768 * 5),
   // background: new Background(null, 0, 0, 10240, 7680),
   attacks: [],
 
@@ -42,13 +42,13 @@ const main = {
    * * The context to draw the stuff.
    * * This is needed btw.
    */
-  draw: (ctx) => {
+  draw: (main, ctx) => {
     ctx.clearRect(0, 0, main.width, main.height);
 
     // ctx.fillStyle = main.bgColor;
     // ctx.fillRect(0, 0, main.width, main.height);
 
-    main.background.draw(ctx, main.player.pos.y, main.player.pos.x);
+    main.background.draw(main, ctx);
   },
 
   drawGUI: (ctx) => {
@@ -154,7 +154,7 @@ const main = {
    */
   update: () => {
     // Background
-    main.draw(ctx);
+    main.draw(main, ctx);
 
     // Update and checks
     main.player.move(main.genuine_width, main.genuine_height);

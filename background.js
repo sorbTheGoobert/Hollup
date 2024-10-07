@@ -1,11 +1,9 @@
-
 /**
  * * This is the background file and it has only one thing.
  * * Cmon you can guess.
  * * THATS CORRECT, FOR THE BACKGROUND CLASS
  */
 class Background {
-
   /**
    * * This is the constructor for the background object
    * @param {string} source
@@ -33,25 +31,27 @@ class Background {
 
   /**
    * * This is the draw method
-   * @param {object} ctx 
+   * @param {object} ctx
    * * As always the context
    */
-  draw = (ctx) => {
-    
+  draw = (main, ctx) => {
     const ptrn = ctx.createPattern(this.sprite, "repeat");
     ctx.fillStyle = ptrn;
 
-    // ctx.translate(-px, -py);
+    let px = main.player.pos.x;
+    let py = main.player.pos.y;
+    px -= main.genuine_width / 2;
+    py -= main.genuine_height / 2;
+    px /= 10;
+    py /= 10;
+    console.log({ h: main.genuine_height, w: main.genuine_width, px, py });
+    ctx.translate(px, py);
+    ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+    ctx.translate(-px, -py);
 
-    ctx.strokeStyle = "green";
-    ctx.lineWidth = 5;
-    ctx.strokeRect(5, 5, this.width - 5, this.height - 5);
-    ctx.fillRect(0, 0, this.width, this.height);
-    
     // ctx.fillRect(x, y, width, height);
     // ctx.drawImage(this.sprite, this.pos.x, this.pos.y, this.width, this.height);
     // ctx.translate(px, py);
-
   };
 }
 
