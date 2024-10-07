@@ -1,4 +1,4 @@
-import Projectile from "../projectile.js";
+
 import spinny from "./spinny.js";
 
 const spiralHellstorm = (main, currentTime) => {
