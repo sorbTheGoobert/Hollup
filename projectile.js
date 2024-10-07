@@ -86,7 +86,7 @@ export default class Projectile {
       linearGrad.addColorStop(0, this.color_pointer);
       linearGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
       ctx.strokeStyle = linearGrad;
-      ctx.lineWidth = this.radius * 2
+      ctx.lineWidth = this.radius
       ctx.beginPath();
       ctx.moveTo(this.pos.x, this.pos.y);
       ctx.lineTo(this.pos.x + this.speed.horizontal.current * 30, this.pos.y + this.speed.vertical.current * 30);
