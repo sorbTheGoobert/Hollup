@@ -1,7 +1,3 @@
-import Homing from "./homingproj.js";
-import Laser from "./laser.js";
-import Projectile from "./projectile.js";
-import { movingLaser } from "./movingLaser.js";
 import thatoneannoyingstarterattack from "./patterns/thatoneannoyingstarterattack.js";
 import PILLARJHONSREVENGE from "./patterns/PILLARJHONSREVENGE.js";
 import spiralHellstorm from "./patterns/spiralHellstorm.js";
@@ -137,15 +133,16 @@ const initAttacks = (main) => {
   //   );
   // }
 
+  // * Init
   let currentTime = 3 * 60;
 
-  // Attacks
-  currentTime = thatoneannoyingstarterattack(main, currentTime);
+  // // * Main attacks
+  // currentTime = thatoneannoyingstarterattack(main, currentTime);
 
-  currentTime += 120;
-  currentTime = PILLARJHONSREVENGE(main, currentTime);
+  // currentTime += 120;
+  // currentTime = PILLARJHONSREVENGE(main, currentTime);
 
-  currentTime += 120;
+  // currentTime += 120;
   currentTime = spiralHellstorm(main, currentTime);
 };
 
