@@ -7,6 +7,7 @@ import Player from "./player.js";
 import Background from "./background.js";
 import initAttacks from "./attacks.js";
 import moveTitle from "./decoScripts/WOAHMOVINGTITLE.js";
+import displayPaused from "./paused.js";
 
 // Display
 const game = document.getElementById("game");
@@ -36,6 +37,7 @@ const main = {
   background: new Background("./assets/image2.jpg", 0, 0, 1024 * 5, 768 * 5),
   // background: new Background(null, 0, 0, 10240, 7680),
   attacks: [],
+  paused: false,
 
   /**
    * * Draws the background, and refreshes it
@@ -107,6 +109,9 @@ const main = {
       if (event.code === "KeyF") {
         main.player.doADash();
       }
+      if (event.code === "Backquote") {
+        main.paused = !main.paused;
+      }
     });
 
     const aButton = document.getElementById("aButton");
@@ -149,11 +154,30 @@ const main = {
     setInterval(requestAnimationFrame, 1000 / 60, main.update);
   },
 
+  drawOthers: (main, ctx) => {
+    main.draw(main, ctx);
+
+    main.attacks.forEach((element) => {
+      element.draw(ctx, main);
+    });
+
+    main.drawGUI(ctx);
+
+    main.player.draw(ctx);
+  },
+
   /**
    * * This is the update method.
    * * It loops every tick.
    */
   update: () => {
+    if (main.paused) {
+      main.draw(main, ctx);
+      main.drawOthers(main, ctx);
+      displayPaused(main, ctx);
+      return null;
+    }
+
     // Misc
     moveTitle();
 
@@ -166,14 +190,7 @@ const main = {
       element.check(main.player, main.width, main.height);
     });
 
-    // Drawing
-    main.attacks.forEach((element) => {
-      element.draw(ctx, main);
-    });
-
-    main.drawGUI(ctx);
-
-    main.player.draw(ctx);
+    main.drawOthers(main, ctx);
   },
 };
 
