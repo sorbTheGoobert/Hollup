@@ -6,7 +6,8 @@ const spinny = (
   shots,
   direction,
   radiusOfTheSpinner,
-  offset
+  offset,
+  long
 ) => {
   for (let j = 0; j < shots; j++) {
     let angle = ((j * (360 / shots) - offset) * Math.PI) / 180;
@@ -22,11 +23,14 @@ const spinny = (
         main.height / 2,
         xVel,
         yVel,
+        xVel,
+        yVel,
         1000000000000000,
         1000000000000000,
         currentTime,
         10,
-        true
+        true,
+        long
       )
     );
     // lastAngle = angle;

@@ -44,7 +44,7 @@ class Background {
     py -= main.genuine_height / 2;
     px /= 10;
     py /= 10;
-    console.log({ h: main.genuine_height, w: main.genuine_width, px, py });
+    // console.log({ h: main.genuine_height, w: main.genuine_width, px, py });
     ctx.translate(px, py);
     ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
     ctx.translate(-px, -py);

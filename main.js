@@ -6,6 +6,7 @@
 import Player from "./player.js";
 import Background from "./background.js";
 import initAttacks from "./attacks.js";
+import moveTitle from "./decoScripts/WOAHMOVINGTITLE.js";
 
 // Display
 const game = document.getElementById("game");
@@ -153,6 +154,9 @@ const main = {
    * * It loops every tick.
    */
   update: () => {
+    // Misc
+    moveTitle();
+
     // Background
     main.draw(main, ctx);
 

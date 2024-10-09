@@ -12,6 +12,10 @@ export default class Projectile {
    * * Horizontal position of the projectile
    * @param {number} y
    * * Vertical position of the projectile
+   * @param {number} initialxvel
+   * * Initial horizontal velocity of the projectile
+   * @param {number} initialyvel
+   * * Initial vertical velocity of the projectile
    * @param {number} xs
    * * Horizontal max velocity of the projectile
    * @param {number} ys
@@ -26,28 +30,28 @@ export default class Projectile {
    * * Radius of the projectile
    * @param {number} p
    * * If the projectile pierces or not
-   * @param {number} h
-   * * If the projectile homes or not
+   * @param {number} long
+   * * How long the ... i forgor
    */
-  constructor(x, y, xs, ys, xa, ya, t, r, p) {
+  constructor(x, y, initialxvel, initialyvel, xs, ys, xa, ya, t, r, p, long) {
     this.pos = {
       x: x,
       y: y,
     };
     this.radius = r;
     this.color = "rgba(255, 0, 0, 0)";
-    this.color_pointer = "rgba(255, 0, 0, 0.4)"
+    this.color_pointer = "rgba(255, 0, 0, 0.4)";
     this.hitbox = false;
     this.dead = false;
     this.prestart = true;
     this.speed = {
       horizontal: {
-        current: 0,
+        current: initialxvel,
         accel: xa,
         cap: xs,
       },
       vertical: {
-        current: 0,
+        current: initialyvel,
         accel: ya,
         cap: ys,
       },
@@ -56,6 +60,8 @@ export default class Projectile {
     this.timer = t;
     this.hit = false;
     this.opacity = 0;
+    this.howLong = long;
+    this.currentLong = 0;
   }
 
   /**
@@ -68,28 +74,61 @@ export default class Projectile {
       if (this.timer >= 60) {
         return null;
       }
-      console.log(this.timer)
+      // console.log(this.timer)
       let step = 1 / 120;
       this.opacity += step;
       this.color = `rgba(255, 0, 0, ${this.opacity.toPrecision(3)})`;
-      console.log({ time: this.timer, color: this.color }, "Drawing pre hitbox!")
+      // console.log({ time: this.timer, color: this.color }, "Drawing pre hitbox!")
       ctx.fillStyle = this.color;
       ctx.beginPath();
       ctx.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI);
       ctx.fill();
       ctx.closePath();
+
+      this.currentLong += this.howLong / 60;
+      console.log(this.currentLong);
+      const linearGrad = ctx.createLinearGradient(
+        this.pos.x,
+        this.pos.y,
+        // 0,
+        // 0,
+        this.pos.x + this.speed.horizontal.current * this.currentLong,
+        this.pos.y + this.speed.vertical.current * this.currentLong
+        // 1000,
+        // 1000,
+      );
+      linearGrad.addColorStop(0, "rgba(255, 0, 0, 0.2)");
+      linearGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+      ctx.strokeStyle = linearGrad;
+      ctx.lineWidth = this.radius;
+      ctx.beginPath();
+      ctx.moveTo(this.pos.x, this.pos.y);
+      // ctx.moveTo(0, 0);
+      ctx.lineTo(
+        this.pos.x + this.speed.horizontal.current * this.howLong,
+        this.pos.y + this.speed.vertical.current * this.howLong
+      );
+      ctx.stroke();
       return null;
     }
     this.color = "rgba(255, 0, 0, 1)";
     if (!this.dead) {
-      const linearGrad = ctx.createLinearGradient(this.pos.x, this.pos.y, this.pos.x + this.speed.horizontal.current * 30, this.pos.y + this.speed.vertical.current * 30);
+      const linearGrad = ctx.createLinearGradient(
+        this.pos.x,
+        this.pos.y,
+        this.pos.x + this.speed.horizontal.current * this.howLong,
+        this.pos.y + this.speed.vertical.current * this.howLong
+      );
       linearGrad.addColorStop(0, this.color_pointer);
       linearGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
       ctx.strokeStyle = linearGrad;
-      ctx.lineWidth = this.radius
+      ctx.lineWidth = this.radius;
       ctx.beginPath();
       ctx.moveTo(this.pos.x, this.pos.y);
-      ctx.lineTo(this.pos.x + this.speed.horizontal.current * 30, this.pos.y + this.speed.vertical.current * 30);
+      ctx.lineTo(
+        this.pos.x + this.speed.horizontal.current * this.howLong,
+        this.pos.y + this.speed.vertical.current * this.howLong
+      );
       ctx.stroke();
       ctx.closePath();
       ctx.fillStyle = this.color;
@@ -103,7 +142,6 @@ export default class Projectile {
     if (this.radius <= 0) {
       return null;
     }
-
     let decreaseSize = this.radius / 2;
     this.radius -= decreaseSize;
     ctx.fillStyle = this.color;
@@ -138,15 +176,7 @@ export default class Projectile {
     // Check if it has ran out
     if (this.dead) return null;
 
-    // // Accelarate
-    // this.speed.horizontal.current += this.speed.horizontal.accel;
-    // this.speed.vertical.current += this.speed.vertical.accel;
-    // if (this.speed.horizontal.current > this.speed.horizontal.cap) {
-    //   this.speed.horizontal.current = this.speed.horizontal.cap;
-    // }
-    // if (this.speed.vertical.current > this.speed.vertical.cap) {
-    //   this.speed.vertical.current = this.speed.vertical.cap;
-    // }
+    // Accelarate
 
     [this.speed.horizontal.current, this.speed.vertical.current] = accelarate(
       this.speed.horizontal.current,
