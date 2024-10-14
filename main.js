@@ -37,7 +37,7 @@ const main = {
   background: new Background("./assets/image2.jpg", 0, 0, 1024 * 5, 768 * 5),
   // background: new Background(null, 0, 0, 10240, 7680),
   attacks: [],
-  paused: false,
+  paused: true,
   time: {
     last: new Date(),
     current: new Date(),
@@ -120,6 +120,13 @@ const main = {
       }
       if (event.code === "Backquote") {
         main.paused = !main.paused;
+      }
+      if(event.code === "KeyR") {
+        main.player.hit = 0;
+        main.player.pos.x = main.genuine_width / 2;
+        main.player.pos.y = main.genuine_height / 2;
+        main.attacks = [];
+        initAttacks(main);
       }
     });
 

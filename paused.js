@@ -1,7 +1,7 @@
 import FontChangingText from "./decoScripts/FONTCHANGING.js";
 import shakeEffect from "./decoScripts/plusENRAGED.js";
 
-let timer = [3, 3];
+let timer = [5, 5];
 const fontChoice = [
   "128px terminus",
   "128px VCR_OSD",
@@ -12,7 +12,7 @@ const fontChoice = [
   "128px Roboto",
   "128px Qwitcher Grypen",
   "128px UnifrakturCook",
-  "128px BD_Eject",``
+  "80px BD_Eject"
 ];
 let currentIndex = Math.floor(Math.random() * fontChoice.length);
 const settings = [0, 0, "rgb(255, 255, 255)", "middle", "center", 5];
