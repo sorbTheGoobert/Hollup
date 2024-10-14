@@ -33,7 +33,6 @@ const FontChangingText = (
   } else {
     timer[0]--;
   }
-  console.log({settings, fontChoice, currentIndex});
   ctx.font = fontChoice[currentIndex];
   ctx.textBaseline = settings[3];
   ctx.textAlign = settings[4];

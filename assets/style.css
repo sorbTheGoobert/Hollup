@@ -169,6 +169,11 @@ body {
 }
 
 @font-face {
+  font-family: BD_Eject;
+  src: url("./Fonts/WhiteGamblesWithHisHumanity.ttf");
+}
+
+@font-face {
   font-family: VCR_OSD;
   src: url("./Fonts/VCR_OSD.ttf");
   /* also

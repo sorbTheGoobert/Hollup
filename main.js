@@ -37,7 +37,7 @@ const main = {
   background: new Background("./assets/image2.jpg", 0, 0, 1024 * 5, 768 * 5),
   // background: new Background(null, 0, 0, 10240, 7680),
   attacks: [],
-  paused: true,
+  paused: false,
   time: {
     last: new Date(),
     current: new Date(),
@@ -61,7 +61,11 @@ const main = {
 
   drawGUI: (ctx) => {
     ctx.font = "50px VCR_OSD";
-    ctx.fillStyle = main.player.color.current;
+    if(!main.paused) {
+      ctx.fillStyle = main.player.color.current;
+    }else{
+      ctx.fillStyle = "white";
+    }
     ctx.textBaseline = "top";
     ctx.textAlign = "start";
     ctx.fillText(main.player.hit, 10, 10);
@@ -116,7 +120,6 @@ const main = {
       }
       if (event.code === "Backquote") {
         main.paused = !main.paused;
-        console.log(main.paused);
       }
     });
 
@@ -170,8 +173,6 @@ const main = {
       element.draw(ctx, main);
     });
 
-    main.drawGUI(ctx);
-
     main.player.draw(ctx);
   },
 
@@ -193,8 +194,9 @@ const main = {
 
     if (main.paused) {
       main.draw(main, ctx);
-      main.drawOthers(main, ctx);
+      main.drawOthers(main, ctx, true);
       displayPaused(main, ctx);
+      main.drawGUI(ctx);
       requestAnimationFrame(main.update);
       return null;
     }
@@ -212,6 +214,7 @@ const main = {
     });
 
     main.drawOthers(main, ctx);
+    main.drawGUI(ctx);
 
     // ctx.font = "50px terminus";
     // ctx.fillStyle = "red";
