@@ -170,9 +170,13 @@ body {
 
 @font-face {
   font-family: VCR_OSD;
-  src: url("./Fonts/idunnowhysomeonesghotplayersareultrakillplayersandsomeultrakillplayersareoneshotplayers.ttf");
+  src: url("./Fonts/VCR_OSD.ttf");
   /* also
     * DAMN THIS FILE NAME
     ! This also includes me for some reason
+    
+    ! IMPORTANT
+    * RIP's to my boy ./Fonts/idunnowhysomeonesghotplayersareultrakillplayersandsomeultrakillplayersareoneshotplayers.ttf
+    * We will remember you.
   */
 }

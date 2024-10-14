@@ -37,7 +37,12 @@ const main = {
   background: new Background("./assets/image2.jpg", 0, 0, 1024 * 5, 768 * 5),
   // background: new Background(null, 0, 0, 10240, 7680),
   attacks: [],
-  paused: false,
+  paused: true,
+  time: {
+    last: new Date(),
+    current: new Date(),
+    highestDelta: 0,
+  },
 
   /**
    * * Draws the background, and refreshes it
@@ -55,7 +60,7 @@ const main = {
   },
 
   drawGUI: (ctx) => {
-    ctx.font = "50px Arial";
+    ctx.font = "50px VCR_OSD";
     ctx.fillStyle = main.player.color.current;
     ctx.textBaseline = "top";
     ctx.textAlign = "start";
@@ -111,6 +116,7 @@ const main = {
       }
       if (event.code === "Backquote") {
         main.paused = !main.paused;
+        console.log(main.paused);
       }
     });
 
@@ -151,7 +157,10 @@ const main = {
     // Attacks
     initAttacks(main);
 
-    setInterval(requestAnimationFrame, 1000 / 60, main.update);
+    // while (true ) {
+    //   main.update();
+    // }
+    requestAnimationFrame(main.update);
   },
 
   drawOthers: (main, ctx) => {
@@ -171,10 +180,22 @@ const main = {
    * * It loops every tick.
    */
   update: () => {
+    // ! DELTA TIME NOT NEEDED
+    // * The game auto tries to stay at 60fps
+    // TODO: TEST ON LOWER END HARDWARE AND DECIDE IF NECESSARY
+    // console.clear();
+    // let dt =
+    //   main.time.current.getMilliseconds() - main.time.last.getMilliseconds();
+    // if (dt < 0) {
+    //   dt += 1000;
+    // }
+    // console.log({ mil: dt, sec: dt / 1000 });
+
     if (main.paused) {
       main.draw(main, ctx);
       main.drawOthers(main, ctx);
       displayPaused(main, ctx);
+      requestAnimationFrame(main.update);
       return null;
     }
 
@@ -191,6 +212,19 @@ const main = {
     });
 
     main.drawOthers(main, ctx);
+
+    // ctx.font = "50px terminus";
+    // ctx.fillStyle = "red";
+    // ctx.fillText(dt / 1000, 890, 0);
+    // if (dt / 1000 > main.time.highestDelta) {
+    //   main.time.highestDelta = dt / 1000;
+    // }
+    // ctx.fillText(main.time.highestDelta, 890, 50);
+
+    // main.time.last = main.time.current;
+    // main.time.current = new Date();
+
+    requestAnimationFrame(main.update);
   },
 };
 

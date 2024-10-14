@@ -86,7 +86,7 @@ export default class Projectile {
       ctx.closePath();
 
       this.currentLong += this.howLong / 60;
-      console.log(this.currentLong);
+      // console.log(this.currentLong);
       const linearGrad = ctx.createLinearGradient(
         this.pos.x,
         this.pos.y,
