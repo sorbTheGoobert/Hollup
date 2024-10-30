@@ -9,6 +9,10 @@ import initAttacks from "./attacks.js";
 import moveTitle from "./decoScripts/WOAHMOVINGTITLE.js";
 import displayPaused from "./paused.js";
 
+import thatoneannoyingstarterattack from "./patterns/thatoneannoyingstarterattack.js";
+import pillarattackidunno from "./patterns/pillarattackidunno.js";
+import spiralHellstorm from "./patterns/spiralHellstorm.js";
+
 // Display
 const game = document.getElementById("game");
 // Context
@@ -43,6 +47,47 @@ const main = {
     current: new Date(),
     highestDelta: 0,
   },
+  endless: {
+    on: true,
+    score: 0,
+    attackPool: [
+      thatoneannoyingstarterattack,
+      pillarattackidunno,
+      spiralHellstorm,
+    ],
+    check: () => {
+      if (main.attacks.length == 0) {
+        let currentTime = 3 * 60;
+        currentTime = main.endless.attackPool[
+          Math.floor(Math.random() * main.endless.attackPool.length)
+        ](main, currentTime);
+      }
+      if (!main.endless.on) {
+        return;
+      }
+      const alive = main.attacks.filter((e) => !e.dead);
+      if (alive.length != 0) {
+        return;
+      }
+      main.attacks = [];
+      let currentTime = 3 * 60;
+      currentTime = main.endless.attackPool[
+        Math.floor(Math.random() * main.endless.attackPool.length)
+      ](main, currentTime);
+      main.endless.score++;
+    },
+    render: () => {
+      ctx.font = "50px VCR_OSD";
+      if (!main.paused) {
+        ctx.fillStyle = main.player.color.current;
+      } else {
+        ctx.fillStyle = "white";
+      }
+      ctx.textBaseline = "top";
+      ctx.textAlign = "end";
+      ctx.fillText(main.endless.score, main.genuine_width - 10, 10);
+    },
+  },
 
   /**
    * * Draws the background, and refreshes it
@@ -61,14 +106,18 @@ const main = {
 
   drawGUI: (ctx) => {
     ctx.font = "50px VCR_OSD";
-    if(!main.paused) {
+    if (!main.paused) {
       ctx.fillStyle = main.player.color.current;
-    }else{
+    } else {
       ctx.fillStyle = "white";
     }
     ctx.textBaseline = "top";
     ctx.textAlign = "start";
     ctx.fillText(main.player.hit, 10, 10);
+    if (!main.endless.on) {
+      return;
+    }
+    main.endless.render();
   },
 
   /**
@@ -76,6 +125,12 @@ const main = {
    * * It adds the event listeners and starts the loop
    */
   init: () => {
+    // Endless stuff
+    if (main.endless.on) {
+      main.player.hit = 20;
+      main.player.endless = true;
+    }
+
     window.addEventListener("keydown", (event) => {
       switch (event.code) {
         case "Space":
@@ -121,7 +176,7 @@ const main = {
       if (event.code === "Backquote") {
         main.paused = !main.paused;
       }
-      if(event.code === "KeyR") {
+      if (event.code === "KeyR") {
         main.player.hit = 0;
         main.player.pos.x = main.genuine_width / 2;
         main.player.pos.y = main.genuine_height / 2;
@@ -165,12 +220,15 @@ const main = {
     });
 
     // Attacks
-    initAttacks(main);
+    if (!main.endless.on) {
+      initAttacks(main);
+    }
 
     // while (true ) {
     //   main.update();
     // }
     requestAnimationFrame(main.update);
+    // setInterval(requestAnimationFrame, 1000 / 60, main.update);
   },
 
   drawOthers: (main, ctx) => {
@@ -219,7 +277,9 @@ const main = {
     main.attacks.forEach((element) => {
       element.check(main.player, main.width, main.height);
     });
+    main.endless.check();
 
+    // Render
     main.drawOthers(main, ctx);
     main.drawGUI(ctx);
 

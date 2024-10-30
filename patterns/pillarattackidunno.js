@@ -1,6 +1,6 @@
 import Laser from "../laser.js";
 
-const PILLARJHONSREVENGE = (main, currentTime) => {
+const pillarattackidunno = (main, currentTime) => {
   const height = main.height / 8;
   const width = main.width / 8;
   for (let attack = 0; attack < 8; attack++) {
@@ -107,4 +107,4 @@ const PILLARJHONSREVENGE = (main, currentTime) => {
   return currentTime;
 };
 
-export default PILLARJHONSREVENGE;
+export default pillarattackidunno;

@@ -1,3 +1,4 @@
+import { hurt } from "./projMethods/collision/hurtPlayer.js";
 import { rect2circ } from "./projMethods/collision/rect2circ.js";
 import { accelarate } from "./projMethods/move/accelarate.js";
 import { homein } from "./projMethods/move/home.js";
@@ -180,8 +181,7 @@ export default class Homing {
         this.hitbox = false;
         this.dead = true;
       }
-      target.iframes = 120;
-      target.hit++;
+      hurt(target);
     }
     return null;
   };

@@ -65,6 +65,8 @@ class Player {
       iframes: 0,
       ready: false,
     };
+
+    this.endless = false;
   }
   /**
    * * Draws the player

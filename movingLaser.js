@@ -1,4 +1,4 @@
-
+import { hurt } from "./projMethods/collision/hurtPlayer.js";
 import { rect2rect } from "./projMethods/collision/rect2rect.js";
 import { accelarate } from "./projMethods/move/accelarate.js";
 
@@ -142,7 +142,7 @@ export class movingLaser {
       this.dead = true;
     }
 
-    if(this.hitbox.on){
+    if (this.hitbox.on) {
       [this.speed.horizontal.current, this.speed.vertical.current] = accelarate(
         this.speed.horizontal.current,
         this.speed.vertical.current,
@@ -151,7 +151,7 @@ export class movingLaser {
         this.speed.horizontal.max_velocity,
         this.speed.vertical.max_velocity
       );
-  
+
       this.pos.x += this.speed.horizontal.current;
       this.pos.y += this.speed.vertical.current;
     }
@@ -172,8 +172,7 @@ export class movingLaser {
       target.iframes <= 0 &&
       target.dash.iframes <= 0
     ) {
-      target.iframes = 120;
-      target.hit++;
+      hurt(target);
     }
   };
 }

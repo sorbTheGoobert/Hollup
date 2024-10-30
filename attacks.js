@@ -1,5 +1,5 @@
 import thatoneannoyingstarterattack from "./patterns/thatoneannoyingstarterattack.js";
-import PILLARJHONSREVENGE from "./patterns/PILLARJHONSREVENGE.js";
+import pillarattackidunno from "./patterns/pillarattackidunno.js";
 import spiralHellstorm from "./patterns/spiralHellstorm.js";
 
 const initAttacks = (main) => {
@@ -137,12 +137,12 @@ const initAttacks = (main) => {
   let currentTime = 3 * 60;
 
   // * Main attacks
-  // currentTime = thatoneannoyingstarterattack(main, currentTime);
+  currentTime = thatoneannoyingstarterattack(main, currentTime);
 
-  // currentTime += 120;
-  // currentTime = PILLARJHONSREVENGE(main, currentTime);
+  currentTime += 120;
+  currentTime = pillarattackidunno(main, currentTime);
 
-  // currentTime += 120;
+  currentTime += 120;
   currentTime = spiralHellstorm(main, currentTime);
 };
 

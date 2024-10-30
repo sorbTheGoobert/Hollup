@@ -1,3 +1,4 @@
+import { hurt } from "./projMethods/collision/hurtPlayer.js";
 import { rect2rect } from "./projMethods/collision/rect2rect.js";
 
 /**
@@ -91,7 +92,6 @@ export default class Laser {
    * * The player object
    */
   check = (target) => {
-
     if (this.dead) return null;
     // // Check if it has ran out
     // if (this.hitbox.timer.active <= 0) return null;
@@ -133,8 +133,7 @@ export default class Laser {
       target.iframes <= 0 &&
       target.dash.iframes <= 0
     ) {
-      target.iframes = 120;
-      target.hit++;
+      hurt(target);
     }
   };
 }
